@@ -16,6 +16,8 @@ namespace CosmicCuration.Player
 
         public PlayerController GetPlayerController() => playerController;
 
+        public void ReturnBulletToPool(BulletController ReturnBullet) => bulletPool.ReturnToBulletPool(ReturnBullet);
+
         public Vector3 GetPlayerPosition() => playerController.GetPlayerPosition();
         
     } 
