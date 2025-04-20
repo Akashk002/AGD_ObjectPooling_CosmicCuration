@@ -1,55 +1,51 @@
-﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
-  
+
 namespace CosmicCuration.Bullets
 {
-    public  class BulletPool
+    public class BulletPool
     {
-        private BulletView bulletView;
-        private BulletScriptableObject bulletScriptableObject;
-        private List<PooledBullets> pooledBullets = new List<PooledBullets>();
-        public BulletPool(BulletView BulletView , BulletScriptableObject bulletScriptableObject)
+        private BulletView bulletPrefab;
+        private BulletScriptableObject bulletSO;
+        private List<PooledBullet> pooledBullets = new List<PooledBullet>();
+
+        public BulletPool(BulletView bulletPrefab, BulletScriptableObject bulletSO)
         {
-            this.bulletView = BulletView;
-            this.bulletScriptableObject = bulletScriptableObject;
+            this.bulletPrefab = bulletPrefab;
+            this.bulletSO = bulletSO;
         }
 
         public BulletController GetBullet()
         {
-            if(pooledBullets.Count > 0)
+            if (pooledBullets.Count > 0)
             {
-                PooledBullets pooledBullet = pooledBullets.Find(item => !item.isUsed);
-                if (pooledBullet != null)
+                PooledBullet item = pooledBullets.Find(item => !item.isUsed);
+                if (item != null)
                 {
-                    pooledBullet.isUsed = true;
-                    return pooledBullet.bullet;
+                    item.isUsed = true;
+                    return item.Bullet;
                 }
             }
             return CreateNewPooledBullet();
         }
 
-        public void ReturnToBulletPool(BulletController returnBullet)
+        private BulletController CreateNewPooledBullet()
         {
-            PooledBullets pooledBullet = pooledBullets.Find(item => item.bullet.Equals(returnBullet));
+            PooledBullet newBullet = new PooledBullet();
+            newBullet.Bullet = new BulletController(bulletPrefab, bulletSO);
+            newBullet.isUsed = true;
+            pooledBullets.Add(newBullet);
+            return newBullet.Bullet;
+        }
+
+        public void ReturnBullet(BulletController bullet)
+        {
+            PooledBullet pooledBullet = pooledBullets.Find(i => i.Bullet.Equals(bullet));
             pooledBullet.isUsed = false;
         }
 
-        private BulletController CreateNewPooledBullet()
+        public class PooledBullet
         {
-            PooledBullets PooledBullet = new PooledBullets();
-            PooledBullet.bullet = new BulletController(bulletView, bulletScriptableObject);
-            PooledBullet.isUsed = true;
-            pooledBullets.Add(PooledBullet);
-            return PooledBullet.bullet;
-        }
-
-        public class PooledBullets
-        {
-            public BulletController bullet;
+            public BulletController Bullet;
             public bool isUsed;
         }
     }
