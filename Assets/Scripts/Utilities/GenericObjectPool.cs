@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CosmicCuration.Utilities
 {
-    internal class GenericObjectPool<T> where T : class
+    public class GenericObjectPool<T> where T : class
     {
         private List<PooledItem<T>> pooledItems = new List<PooledItem<T>>();
 
