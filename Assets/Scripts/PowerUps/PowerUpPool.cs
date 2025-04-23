@@ -18,7 +18,7 @@ namespace CosmicCuration.PowerUps
         }
         protected override PowerUpController CreateItem<T>()
         {
-            if(typeof(T) == typeof(Shield))
+            if (typeof(T) == typeof(Shield))
             {
                 return new Shield(powerUpData);
             }
@@ -34,5 +34,6 @@ namespace CosmicCuration.PowerUps
             {
                 throw new NotImplementedException($"PowerUp Type nont supported");
             }
+        }
     }
 }
