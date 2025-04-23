@@ -10,14 +10,10 @@ namespace CosmicCuration.VFX
     internal class VFXPool : GenericObjectPool<VFXController>
     {
         private VFXView vfxPrefab;
-        // Constructor
-        
-        public VFXPool(VFXView vfxPrefab)
-        {
-            this.vfxPrefab = vfxPrefab;
-        }
 
-        public VFXController GetVFx() => GetItem<VFXController>();
+        public VFXPool(VFXView vfxPrefab) => this.vfxPrefab = vfxPrefab;
+
+        public VFXController GetVFX() => GetItem<VFXController>();
 
         protected override VFXController CreateItem<T>() => new VFXController(vfxPrefab);
     }
